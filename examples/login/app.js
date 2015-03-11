@@ -1,9 +1,16 @@
-var express = require('express')
-  , passport = require('passport')
-  , util = require('util')
-  , StashStrategy = require('passport-stash').Strategy;
+var express = require('express'),
+    passport = require('passport'),
+    util = require('util'),
+    morgan = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    multer = require('multer'),
+    methodOverride = require('method-override'),
+    session = require('express-session'),
+    serveStatic = require('serve-static'),
+    StashStrategy = require('passport-stash').Strategy;
 
-var STASH_CONSUMER_KEY = "--insert-stash-consumer-key-here--"
+var STASH_CONSUMER_KEY = "--insert-stash-consumer-key-here--";
 var STASH_CONSUMER_SECRET = "--insert-stash-consumer-secret-here--";
 
 
@@ -48,25 +55,22 @@ passport.use(new StashStrategy({
 
 
 
-var app = express.createServer();
+var app = express();
 
 // configure Express
-app.configure(function() {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.logger());
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.session({ secret: 'keyboard cat' }));
-  // Initialize Passport!  Also use passport.session() middleware, to support
-  // persistent login sessions (recommended).
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
-});
-
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.use(morgan("combined"));
+app.use(cookieParser());
+app.use(bodyParser());
+app.use(multer());
+app.use(methodOverride());
+app.use(session({ secret: 'keyboard cat' }));
+// Initialize Passport!  Also use passport.session() middleware, to support
+// persistent login sessions (recommended).
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(serveStatic(__dirname + '/public'));
 
 app.get('/', function(req, res){
   res.render('index', { user: req.user });
@@ -117,6 +121,8 @@ app.listen(3000);
 //   the request will proceed.  Otherwise, the user will be redirected to the
 //   login page.
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login')
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
 }
