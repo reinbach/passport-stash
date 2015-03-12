@@ -1,8 +1,5 @@
 extends ./layout.jade
 
 block content
-      p
-        ID: #{user.id}
-
-      p
-        Name: #{user.displayName}
+      if user
+          p You are still logged in.

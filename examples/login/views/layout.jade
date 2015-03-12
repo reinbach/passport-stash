@@ -6,13 +6,16 @@ html
   body
     if !user
       p
-        a(href="/") Home |
+        a(href="/") Home
+        &nbsp;|&nbsp;
         a(href="/login") Log In
 
     else
       p
-        a(href="/") Home |
-        a(href="/account") Account |
+        a(href="/") Home
+        &nbsp;|&nbsp;
+        a(href="/account") Account
+        &nbsp;|&nbsp;
         a(href="/logout") Log Out
 
     block content
