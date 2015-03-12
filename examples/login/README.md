@@ -8,7 +8,7 @@
 
 ### Setup Stash
 
-Get Stash Docker container from (https://registry.hub.docker.com/u/atlassian/stash/)[https://registry.hub.docker.com/u/atlassian/stash/]
+Get Stash Docker container from [https://registry.hub.docker.com/u/atlassian/stash/](https://registry.hub.docker.com/u/atlassian/stash/)
 
 #### Setup Keys
 
