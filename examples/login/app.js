@@ -43,10 +43,10 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new StashStrategy({
     consumerKey: STASH_CONSUMER_KEY,
     consumerSecret: STASH_CONSUMER_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/stash/callback",
     requestTokenURL: REQUEST_TOKEN_URL,
     accessTokenURL: ACCESS_TOKEN_URL,
     userAuthorizationURL: USER_AUTHORIZE_URL,
+    callbackURL: "http://127.0.0.1:3000/auth/stash/callback",
     signatureMethod: "RSA-SHA1"
   },
   function(token, tokenSecret, profile, done) {
