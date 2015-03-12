@@ -8,18 +8,24 @@ var express = require('express'),
     methodOverride = require('method-override'),
     session = require('express-session'),
     serveStatic = require('serve-static'),
+    fs = require('fs'),
     StashStrategy = require('passport-stash').Strategy;
 
-var STASH_CONSUMER_KEY = "--insert-stash-consumer-key-here--";
-var STASH_CONSUMER_SECRET = "--insert-stash-consumer-secret-here--";
+var STASH_API_URL = process.env.STASH_API_URL;
+var STASH_CONSUMER_KEY = process.env.STASH_CONSUMER_KEY;
+var STASH_CONSUMER_SECRET = fs.readFileSync(process.env.STASH_PEM_FILE,
+                                            {encoding: 'utf8'});
+var REQUEST_TOKEN_URL = STASH_API_URL + "/plugins/servlet/oauth/request-token";
+var ACCESS_TOKEN_URL = STASH_API_URL + "/plugins/servlet/oauth/access-token";
+var USER_AUTHORIZE_URL = STASH_API_URL + "/plugins/servlet/oauth/authorize";
 
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete Stash profile is
+//   this will be as simple as storing the user ID when serializing, and
+//   finding the user by ID when deserializing.  However, since this example
+//   does not have a database of user records, the complete Stash profile is
 //   serialized and deserialized.
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -37,22 +43,24 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new StashStrategy({
     consumerKey: STASH_CONSUMER_KEY,
     consumerSecret: STASH_CONSUMER_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/stash/callback"
+    callbackURL: "http://127.0.0.1:3000/auth/stash/callback",
+    requestTokenURL: REQUEST_TOKEN_URL,
+    accessTokenURL: ACCESS_TOKEN_URL,
+    userAuthorizationURL: USER_AUTHORIZE_URL,
+    signatureMethod: "RSA-SHA1"
   },
   function(token, tokenSecret, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
 
       // To keep the example simple, the user's Stash profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Stash account with a user record in your database,
-      // and return that user instead.
+      // represent the logged-in user.  In a typical application, you would
+      // want to associate the Stash account with a user record in your
+      // database, and return that user instead.
       return done(null, profile);
     });
   }
 ));
-
-
 
 
 var app = express();
@@ -99,8 +107,8 @@ app.get('/auth/stash',
 // GET /auth/stash/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
+//   login page.  Otherwise, the primary route function function will be
+//   called, which, in this example, will redirect the user to the home page.
 app.get('/auth/stash/callback',
   passport.authenticate('stash', { failureRedirect: '/login' }),
   function(req, res) {

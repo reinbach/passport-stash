@@ -4,3 +4,10 @@
 # Node.js
 **/node_modules/*
 npm-debug.log
+
+# Example files
+*.crt
+*.csr
+*.key
+*.pem
+ENV
