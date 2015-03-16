@@ -26,11 +26,8 @@ accepts these credentials and calls `done` providing a user, as well as
     passport.use(new StashStrategy({
         consumerKey: STASH_CONSUMER_KEY,
         consumerSecret: STASH_CONSUMER_SECRET,
-        requestTokenURL: REQUEST_TOKEN_URL,
-        accessTokenURL: ACCESS_TOKEN_URL,
-        userAuthorizationURL: USER_AUTHORIZE_URL,
-        callbackURL: "http://127.0.0.1:3000/auth/stash/callback",
-        signatureMethod: "RSA-SHA1"
+        apiURL: "http://api.example.com",
+        callbackURL: "http://127.0.0.1:3000/auth/stash/callback"
       },
       function(token, tokenSecret, profile, done) {
         User.findOrCreate({ stashId: profile.username }, function (err, user) {

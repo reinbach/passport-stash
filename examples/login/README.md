@@ -18,7 +18,7 @@ Get Stash Docker container from [https://registry.hub.docker.com/u/atlassian/sta
 
 #### Setup Application Links in Stash Admin
 
-Using the above generated keys, create the public key and use that when creating the `application link` in Stash.
+Using the above generated keys, create the public key and use that when creating the [`application link`](https://confluence.atlassian.com/display/JIRA/Linking+to+Another+Application) in Stash.
 
     $ openssl rsa -in stash.pem -pubout
 

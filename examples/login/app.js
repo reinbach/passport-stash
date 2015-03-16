@@ -15,10 +15,6 @@ var STASH_API_URL = process.env.STASH_API_URL;
 var STASH_CONSUMER_KEY = process.env.STASH_CONSUMER_KEY;
 var STASH_CONSUMER_SECRET = fs.readFileSync(process.env.STASH_PEM_FILE,
                                             {encoding: 'utf8'});
-var REQUEST_TOKEN_URL = STASH_API_URL + "/plugins/servlet/oauth/request-token";
-var ACCESS_TOKEN_URL = STASH_API_URL + "/plugins/servlet/oauth/access-token";
-var USER_AUTHORIZE_URL = STASH_API_URL + "/plugins/servlet/oauth/authorize";
-
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -43,11 +39,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new StashStrategy({
     consumerKey: STASH_CONSUMER_KEY,
     consumerSecret: STASH_CONSUMER_SECRET,
-    requestTokenURL: REQUEST_TOKEN_URL,
-    accessTokenURL: ACCESS_TOKEN_URL,
-    userAuthorizationURL: USER_AUTHORIZE_URL,
-    callbackURL: "http://127.0.0.1:3000/auth/stash/callback",
-    signatureMethod: "RSA-SHA1"
+    apiURL: STASH_API_URL,
+    callbackURL: "http://127.0.0.1:3000/auth/stash/callback"
   },
   function(token, tokenSecret, profile, done) {
     // asynchronous verification, for effect...
