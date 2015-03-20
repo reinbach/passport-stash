@@ -1,5 +1,7 @@
 # Passport-Stash
 
+[![NPM](https://nodei.co/npm/passport-stash.png)](https://nodei.co/npm/passport-stash/)
+
 [Passport](https://github.com/jaredhanson/passport) strategy for authenticating
 with [Stash](https://www.atlassian.com/software/stash/) using the OAuth 1.0a API.
 
