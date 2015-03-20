@@ -13,8 +13,10 @@ Get Stash Docker container from [https://registry.hub.docker.com/u/atlassian/sta
 #### Setup Keys
 
     $ openssl genrsa -out stash.key 1024
-    $ req -new -key stash.key -out stash.csr
+    $ openssl req -new -key stash.key -out stash.csr
     $ openssl x509 -req -in stash.csr -signkey stash.key -out stash.crt
+    $ cat stash.key > stash.pem
+    $ cat stash.crt >> stash.pem
 
 #### Setup Application Links in Stash Admin
 
